@@ -62,8 +62,7 @@ const Home = () => {
   if (status == 'loading') {
       console.log("loading")
   } else {
-      user = session.user
-      console.log(user)
+    user = session.user
   }
   return (
     <div class="h-[100vh] w-[100vw]">

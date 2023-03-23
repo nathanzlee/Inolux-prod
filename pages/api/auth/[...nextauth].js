@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from 'next-auth/providers/credentials'
 import connectDB from '../../../util/connectDB'
-import Users from '../../../models/user'
+import User from '../../../models/user'
 import bcrypt from 'bcrypt'
 
 connectDB()
@@ -17,7 +17,7 @@ export default NextAuth({
       async authorize(credentials) {
         const email = credentials.email;
         const password = credentials.password;
-        const user = await Users.findOne({email})
+        const user = await User.findOne({email})
         if (user) return loginUser({password, user})
 
         throw new Error("No such email.");
@@ -33,7 +33,9 @@ export default NextAuth({
   database: process.env.DATABASE_URL,
   callbacks: {
     session: async (session, user) => {
-        session.user = user
+        const person = await User.findOne({email: session.session.user.email})
+        console.log(person)
+        session.user = person
         return Promise.resolve(session)
     }
   }
@@ -45,7 +47,7 @@ const loginUser = async ({password, user}) => {
   if(!isMatch){
     // throw new Error("Password Incorrect.");
     const hashPass = await bcrypt.hash(password, 12)
-    Users.findOneAndUpdate(
+    User.findOneAndUpdate(
       {email: user.email},
       {$set: {password: hashPass}},
       (err) => {
@@ -59,7 +61,7 @@ const loginUser = async ({password, user}) => {
 
 const registerUser = async ({email, password}) => {
   const hashPass = await bcrypt.hash(password, 12)
-  const newUser = new Users({ email, password: hashPass })
+  const newUser = new User({ email, password: hashPass })
   await newUser.save()
   throw new Error("Success! Check your email.");
 }

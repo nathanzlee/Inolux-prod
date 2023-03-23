@@ -14,8 +14,6 @@ const Login = ({session}) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const req = await signIn("credentials", {email: email, password: password})
-    const res = await req.json()
-    console.log(res)
     return Router.push("/")
   }
 
