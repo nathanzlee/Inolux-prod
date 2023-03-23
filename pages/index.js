@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSession, getSession } from 'next-auth/react'
-import Nav from '../components/Nav'
+import Nav from '../components/nav'
 import {
   Bars4Icon,
   CalendarIcon,
