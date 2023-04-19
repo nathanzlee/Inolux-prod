@@ -4,7 +4,7 @@ import Breadcrumb from '../../../components/breadcrumb'
 import Select from '../../../components/select'
 import TravelAuths from '../../../components/travel/travelauth/travelAuths'
 import Router, { useRouter } from 'next/router'
-import { CheckCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { XCircleIcon } from '@heroicons/react/20/solid'
 
 const requesterOptions = [
@@ -56,11 +56,11 @@ const Travel = ({ session }) => {
                             <span className="mr-2">Requested By: </span>
                             <Select options={requesterOptions} initial={requesterFilter} onChange={(e) => {
                                 setRequesterFilter(e)
-                            }} />
+                            }} styles={"min-w-[120px]"}/>
                             <span className="ml-5 mr-2">Status: </span>
                             <Select options={statusOptions} initial={statusFilter} onChange={(e) => {
                                 setStatusFilter(e)
-                            }}/>
+                            }} styles={"min-w-[120px]"} />
                         </div>
                         {user && user.level !== 3 &&  
                         <button
@@ -92,6 +92,89 @@ const Travel = ({ session }) => {
                             return travelAuth.status == "denied"
                         }
                     })} loading={loading}/>
+                    <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">
+                        <div className="flex flex-1 justify-between sm:hidden">
+                            <a
+                            href="#"
+                            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                            Previous
+                            </a>
+                            <a
+                            href="#"
+                            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            >
+                            Next
+                            </a>
+                        </div>
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <div>
+                            <p className="text-sm text-gray-700">
+                                Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
+                                <span className="font-medium">{travelAuths.length}</span> results
+                            </p>
+                            </div>
+                            <div>
+                            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                <a
+                                href="#"
+                                className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                <span className="sr-only">Previous</span>
+                                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                                </a>
+                                {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+                                <a
+                                href="#"
+                                aria-current="page"
+                                className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                >
+                                1
+                                </a>
+                                <a
+                                href="#"
+                                className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                2
+                                </a>
+                                <a
+                                href="#"
+                                className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                                >
+                                3
+                                </a>
+                                <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+                                ...
+                                </span>
+                                <a
+                                href="#"
+                                className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                                >
+                                8
+                                </a>
+                                <a
+                                href="#"
+                                className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                9
+                                </a>
+                                <a
+                                href="#"
+                                className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                10
+                                </a>
+                                <a
+                                href="#"
+                                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                <span className="sr-only">Next</span>
+                                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                                </a>
+                            </nav>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {alert && ((router.query.success == 'true') ? (
                     <div className="rounded-md bg-green-50 p-4 absolute bottom-10">

@@ -53,17 +53,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Home = () => {
-  const { data: session, status } = useSession()
+const Home = ({ session }) => {
+  const user = session.user 
 
-  if (!session) return null 
-
-  let user 
-  if (status == 'loading') {
-      console.log("loading")
-  } else {
-    user = session.user
-  }
   return (
     <div class="h-[100vh] w-[100vw]">
         <Nav />

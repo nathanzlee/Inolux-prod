@@ -4,7 +4,6 @@ const travelAuthSchema = mongoose.Schema({
     name: {type: String},
     number: {type: String},
     department: {type: String},
-    phone: {type: String},
     reqDate: {type: Date},
     international: {type: Boolean},
     purpose: {type: String},
@@ -18,18 +17,21 @@ const travelAuthSchema = mongoose.Schema({
         ref: 'user'
     },
     employeeSig: {
-        signature: {type: String, default: ""}, 
+        signature: {type: String}, 
         date: {type: Date}
     },
     managerSig: {
         user: {type: mongoose.Schema.ObjectId, ref: 'user'},
-        signature: {type: String, default: ""}, 
+        signature: {type: String}, 
         date: {type: Date}
     },
     presidentSig: {
-        user: {type: mongoose.Schema.ObjectId, ref: 'user'},
-        signature: {type: String, default: ""}, 
-        date: {type: Date}
+        type: {
+            user: {type: mongoose.Schema.ObjectId, ref: 'user'},
+            signature: {type: String}, 
+            date: {type: Date}
+        },
+        default: null
     },
     notes: {type: String, default: ""},
     status: {type: String, default: "pending"}

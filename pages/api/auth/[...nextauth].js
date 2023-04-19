@@ -34,7 +34,6 @@ export default NextAuth({
   callbacks: {
     session: async (session, user) => {
         const person = await User.findOne({email: session.session.user.email})
-        console.log(person)
         session.user = person
         return Promise.resolve(session)
     }
