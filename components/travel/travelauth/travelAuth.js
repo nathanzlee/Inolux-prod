@@ -32,7 +32,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         startDate: data.startDate,
         endDate: data.endDate,
         itinerary: data.itinerary,
-        travelAdv: data.travelAdvance,
+        travelAdv: data.travelAdv,
         personalTravel: data.personalTravel,
         employeeSig: data.employeeSig,
         managerSig: data.managerSig,
@@ -92,12 +92,12 @@ const TravelAuth = ({ type, viewer, data }) => {
         let approval
         if (viewer == 'manager') {
             const status = (formData.presidentSig !== null && formData.presidentSig.signature == '') ? 'pending' : 'approved'
-            approval = {role: 'manager', managerSig: formData.managerSig, status: status, notes: formData.notes}
+            approval = {role: 'manager', signature: formData.managerSig.signature, date: formData.managerSig.date, status: status, notes: formData.notes}
         } else {
             const status = (managerSignature.signature == '') ? 'pending' : 'approved'
-            approval = {role: 'president', presidentSig: formData.presidentSig, status: status, notes: formData.notes}
+            approval = {role: 'president', signature: formData.presidentSig.signature, date: formData.presidentSig.date, status: status, notes: formData.notes}
         }
-        console.log(data)
+        console.log(approval)
         const req = await fetch('/api/travel/travelauth/authorize/' + data.id, {
             method: 'POST',
             headers: {

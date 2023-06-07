@@ -32,9 +32,9 @@ const Partners = ({ session }) => {
     }, [])
     
     return (
-        <div class="h-[100vh] w-[100vw]">
+        <div className="h-[100vh] w-[100vw]">
             <Breadcrumb pages={pages}/>
-            <div class="w-full h-full bg-gray-100 p-10">
+            <div className="w-full h-full bg-gray-100 p-10">
                 <div className="sm:px-6 lg:px-8">
                     <h1 className="font-semibold leading-6 text-2xl">Business Partners</h1>
                     <div className="flex flex-row justify-between items-center mt-8 sm:flex sm:items-center">

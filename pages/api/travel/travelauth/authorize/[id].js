@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 const authorizeTravelAuth = async (req, res) => {
     try {
         if (req.body.role == 'manager') {
-            await TravelAuth.updateOne({_id: req.query.id}, {$set: {managerSig: req.body.managerSig, status: req.body.status, notes: req.body.notes}})
+            await TravelAuth.updateOne({_id: req.query.id}, {$set: {'managerSig.signature': req.body.signature, 'managerSig.date': req.body.date, status: req.body.status, notes: req.body.notes}})
         } else {
-            await TravelAuth.updateOne({_id: req.query.id}, {$set: {presidentSig: req.body.presidentSig, status: req.body.status, notes: req.body.notes}})
+            await TravelAuth.updateOne({_id: req.query.id}, {$set: {'presidentSig.signature': req.body.signature, 'presidentSig.date': req.body.date, status: req.body.status, notes: req.body.notes}})
         }
         res.json({msg: 'Success!'})
     } catch (err) {

@@ -14,7 +14,7 @@ const pages = [
 
 const Items = ({ session }) => {
     const [items, setItems] = useState([])
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(false)
     const router = useRouter()
     const [alert, setAlert] = useState(router.query.success == 'true' || router.query.success == 'false')
@@ -32,16 +32,13 @@ const Items = ({ session }) => {
     }, [])
     
     return (
-        <div class="h-[100vh] w-[100vw]">
+        <div className="h-[100vh] w-[100vw]">
             <Breadcrumb pages={pages}/>
-            <div class="w-full h-full bg-gray-100 p-10">
+            <div className="w-full h-full bg-gray-100 p-10">
                 <div className="sm:px-6 lg:px-8">
                     <h1 className="font-semibold leading-6 text-2xl">Items</h1>
                     <div className="flex flex-row justify-between items-center mt-8 sm:flex sm:items-center">
-                        <div className="flex flex-row justify-center items-center">
-                            
-                           
-                        </div>
+                        <div></div>
                         <button
                             type="button"
                             onClick={() => {Router.push('/buy/items/new')}}

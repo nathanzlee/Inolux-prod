@@ -1,11 +1,10 @@
 import Row from './row'
 
-const Partners = ({ data, loading, edit }) => {
-    console.log(data)
+const Locations = ({ data, loading, edit }) => {
     return (!data || data.length == 0) ?
     (
         <div className="h-[600px] flex flex-col justify-center items-center border-dashed border-2 border-gray-300 rounded-md mt-8 p-4">
-            {(loading) ? (<h1 className="text-3xl text-gray-300">Loading</h1>) : (<h1 className="text-3xl text-gray-300">No Items</h1>)}
+            {(loading) ? (<h1 className="text-3xl text-gray-300">Loading</h1>) : (<h1 className="text-3xl text-gray-300">No Locations</h1>)}
         </div>
     )
     :
@@ -17,12 +16,6 @@ const Partners = ({ data, loading, edit }) => {
                         <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                             Name
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                            Type
-                        </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                            Created
-                        </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                             <span className="sr-only">View</span>
                         </th>
@@ -30,9 +23,9 @@ const Partners = ({ data, loading, edit }) => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                     {data.map((item) => {
-                        const {_id, name, type, dateAdded} = item
+                        const {_id, name, address} = item
                         return (
-                            <Row key={_id} id={_id} name={name} type={type} dateAdded={new Date(dateAdded).toLocaleDateString()} edit={edit}/>
+                            <Row key={_id} id={_id} name={name} address={address} edit={edit}/>
                         )
                     })}
                 </tbody>
@@ -41,4 +34,4 @@ const Partners = ({ data, loading, edit }) => {
     )
 }
 
-export default Partners
+export default Locations

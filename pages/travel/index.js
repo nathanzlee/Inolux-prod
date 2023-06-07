@@ -32,9 +32,9 @@ function classNames(...classes) {
 
 const Travel = () => {
     return (
-        <div class="h-[100vh] w-[100vw]">
+        <div className="h-[100vh] w-[100vw]">
             <Nav />
-            <div class="w-full h-full bg-gray-100 p-10">
+            <div className="w-full h-full bg-gray-100 p-10">
                 <div className="sm:px-6 lg:px-8">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">Travel</h1>
                     <div className="mt-10 divide-y divide-gray-200 overflow-hidden sm:grid sm:grid-cols-2 sm:gap-[20px] sm:divide-y-0">

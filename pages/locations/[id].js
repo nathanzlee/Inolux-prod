@@ -1,31 +1,30 @@
 import { getSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Partner from '../../../components/buy/partners/partner'
-import Breadcrumb from '../../../components/breadcrumb'
+import Breadcrumb from '../../components/breadcrumb'
+import Location from '../../components/locations/location'
 
-const EditPartner = ({ session }) => {
+const EditLocation = ({ session }) => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [partner, setPartner] = useState({
+    const [location, setLocation] = useState({
         name: '',
-        type: 'Customer',
-        address: ''
+        address: '',
+        description: ''
     })
 
     useEffect(() => {
         setLoading(true)
-        fetch('/api/buy/partners/' + router.query.id)
+        fetch('/api/locations/' + router.query.id)
         .then(req => req.json())
         .then(res => {
-            setPartner({...res, id: router.query.id})
+            setLocation({...res, id: router.query.id})
             setLoading(false)
         })
     }, [])
 
     const pages = [
-        { name: 'Buy', href: '/buy' },
-        { name: 'Partners', href: '/buy/partners' },
+        { name: 'Locations', href: '/locations' },
         { name: (router.query.edit === 'true') ? 'Edit' : 'View', href: router.asPath }
     ]
 
@@ -37,7 +36,7 @@ const EditPartner = ({ session }) => {
                     loading ? 
                     (<h1 className="text-2xl text-gray-300 mt-10">Loading...</h1>)
                     :
-                    (<Partner type={'view'} data={partner} edit={router.query.edit === 'true'} />)
+                    (<Location type={'view'} data={location} edit={router.query.edit === 'true'}/>)
                 }
             </div>
         </div>
@@ -61,4 +60,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default EditPartner
+export default EditLocation

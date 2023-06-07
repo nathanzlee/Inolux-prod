@@ -5,7 +5,7 @@ const TravelAuths = ({ user, data, loading }) => {
     return (!data || data.length == 0) ?
     (
         <div className="h-[600px] flex flex-col justify-center items-center border-dashed border-2 border-gray-300 rounded-md mt-8 p-4">
-            {(loading) ? (<h1 class="text-3xl text-gray-300">Loading</h1>) : (<h1 class="text-3xl text-gray-300">No Travel Authorizations</h1>)}
+            {(loading) ? (<h1 className="text-3xl text-gray-300">Loading</h1>) : (<h1 className="text-3xl text-gray-300">No Travel Authorizations</h1>)}
         </div>
     )
     :
@@ -47,19 +47,19 @@ const TravelAuths = ({ user, data, loading }) => {
                         if (name == user.firstName + ' ' + user.lastName) {
                             type = {text: 'View', user: 'requester'}
                         } else {
-                            if (managerSig.user.firstName == user.firstName) {
+                            if (managerSig.user?.firstName == user.firstName) {
                                 // You da manager
                                 console.log("Im the manager bitch")
                                 type = (managerSig.signature !== '') ? {text: 'View', user: 'manager'} : {text: 'Authorize', user: 'manager'}
                             } else {
                                 // You da president 
                                 console.log("Im the president bitch")
-                                type = (presidentSig.signature !== '') ? {text: 'View', user: 'president'} : {text: 'Authorize', user: 'president'}
+                                type = (presidentSig?.signature !== '') ? {text: 'View', user: 'president'} : {text: 'Authorize', user: 'president'}
                             }
                         }
 
                         return (
-                            <Row key={_id} id={_id} requester={name} manager={managerSig.user.firstName + ' ' + managerSig.user.lastName} reqDate={new Date(reqDate).toLocaleDateString()} approvedDate={approvedDate} status={status} type={type} />
+                            <Row key={_id} id={_id} requester={name} manager={managerSig.user?.firstName + ' ' + managerSig.user?.lastName} reqDate={new Date(reqDate).toLocaleDateString()} approvedDate={approvedDate} status={status} type={type} />
                         )
                     })}
                 </tbody>

@@ -1,24 +1,24 @@
 import { getSession } from 'next-auth/react'
-import Partner from '../../../components/buy/partners/partner'
-import Breadcrumb from '../../../components/breadcrumb'
+import Breadcrumb from '../../components/breadcrumb'
+import Location from '../../components/locations/location'
 
 const pages = [
-    { name: 'Buy', href: '/buy' },
-    { name: 'Partners', href: '/buy/partners' },
-    { name: 'New', href: '/buy/partners/new' }
+    { name: 'Locations', href: '/locations' },
+    { name: 'New', href: '/locations/new' }
 ]
 
-const NewPartner = ({ session }) => {
-    const partner = {
-      name: '',
-      type: 'Customer',
-      address: ''
+const NewLocation = ({ session }) => {
+    const location = {
+        name: '',
+        address: '',
+        description: ''
     }
+
     return (
         <div className="h-[100vh] w-[100vw]">
             <Breadcrumb pages={pages}/>
             <div className="w-full h-full bg-gray-100 overflow-y-auto px-10 pb-[100px]">
-                <Partner type={'new'} data={partner} edit={true} />
+                <Location type={'new'} data={location} edit={true}/>
             </div>
         </div>
     )
@@ -41,4 +41,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default NewPartner
+export default NewLocation

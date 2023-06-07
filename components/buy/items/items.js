@@ -5,7 +5,7 @@ const Items = ({ data, loading, edit }) => {
     return (!data || data.length == 0) ?
     (
         <div className="h-[600px] flex flex-col justify-center items-center border-dashed border-2 border-gray-300 rounded-md mt-8 p-4">
-            {(loading) ? (<h1 class="text-3xl text-gray-300">Loading</h1>) : (<h1 class="text-3xl text-gray-300">No Items</h1>)}
+            {(loading) ? (<h1 className="text-3xl text-gray-300">Loading</h1>) : (<h1 className="text-3xl text-gray-300">No Items</h1>)}
         </div>
     )
     :

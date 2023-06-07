@@ -1,4 +1,4 @@
-import { useSession, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
@@ -9,10 +9,6 @@ function classNames(...classes) {
 }
 
 export default function Nav() {
-  const { data: session, status } = useSession()
-
-  if (!session) return null
-
   const route = useRouter().asPath 
   const selectedStyle = "inline-flex items-center border-b-2 border-[var(--primary-color)] px-1 pt-1 text-sm font-medium text-gray-900"
   const defaultStyle = "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"

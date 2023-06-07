@@ -9,8 +9,8 @@ export default async function handler(req, res){
 
 const getPartners = async (req, res) => {
     try {
-        const items = await Partners.find()
-        res.json({ data: items })
+        const partners = await Partners.find()
+        res.json({ data: partners })
     } catch (err) {
         res.json({err: err})
     }

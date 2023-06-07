@@ -1,32 +1,32 @@
 import connectDB from '../../../../util/connectDB'
-import Item from '../../../../models/item'
+import PurchaseOrders from '../../../../models/purchaseOrder'
 
 connectDB()
 
 export default async function handler(req, res){
     switch(req.method){
         case "POST":
-          await saveItem(req, res)
+          await savePurchaseOrder(req, res)
           break;
         case "GET":
-          await getItem(req, res)
+          await getPurchaseOrder(req, res)
           break;
       }
-}
+  }
   
-const getItem = async (req, res) => {
+const getPurchaseOrder = async (req, res) => {
     try {
-        const item = await Item.findOne({_id: req.query.id})
-        res.json(item)
+        const purchaseOrder = await PurchaseOrders.findOne({_id: req.query.id})
+        res.json(purchaseOrder)
     } catch (err) {
         console.log(err)
         res.json({err: err})
     }
 }
 
-const saveItem = async (req, res) => {
+const savePurchaseOrder = async (req, res) => {
     try {
-        await Item.updateOne({_id: req.query.id}, {$set: {...req.body}})
+        await PurchaseOrders.updateOne({_id: req.query.id}, {$set: {...req.body}})
         res.json({msg: 'Success!'})
     } catch (err) {
         console.log(err)
