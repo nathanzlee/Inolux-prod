@@ -2,6 +2,7 @@ import connectDB from '../../../../util/connectDB'
 import User from '../../../../models/user'
 import TravelAuth from '../../../../models/travelAuth'
 import { getSession } from 'next-auth/react'
+import { transporter, mailOptions } from '../../../../util/nodemailer'
 
 connectDB()
 
@@ -56,6 +57,27 @@ async function newTravelAuth(req, res) {
         })
         await newTravelAuth.save()
         await User.updateOne({email: session.user.email},{$push: {travelAuths: newTravelAuth}})
+        try {
+            if (req.body.international == true && session.user.level == 1) {
+                await transporter.sendMail({
+                    ...mailOptions, 
+                    to: president.email,
+                    subject: "New Travel Authorization",
+                    text: "This is a test btw",
+                    html: `<h1>New Travel Authorization</h1><p>${user.firstName + " " + user.lastName} has requested a new travel authorization.</p>`
+                })
+            }
+            await transporter.sendMail({
+                ...mailOptions, 
+                to: user.managers[0].email,
+                subject: "New Travel Authorization",
+                text: "This is a test btw",
+                html: `<h1>New Travel Authorization</h1><p>${user.firstName + " " + user.lastName} has requested a new travel authorization.</p>`
+            })
+            res.json({msg: "Success!"})
+        } catch (err) {
+            console.log(err)
+        }
         res.json({msg: 'Success!'})
     } catch (err) {
         console.log(err)

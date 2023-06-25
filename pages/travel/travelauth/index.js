@@ -45,6 +45,19 @@ const Travel = ({ session }) => {
         })
     }, [])
     
+    async function testEmail() {
+        console.log("Send email")
+        const req = await fetch('/api/mailer', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: null 
+        })
+        const res = await req.json()
+        console.log(res)
+    }
+
     return (
         <div className="h-[100vh] w-[100vw]">
             <Breadcrumb pages={pages}/>
@@ -61,6 +74,7 @@ const Travel = ({ session }) => {
                             <Select options={statusOptions} initial={statusFilter} onChange={(e) => {
                                 setStatusFilter(e)
                             }} styles={"min-w-[120px]"} />
+                            <button onClick={testEmail}>Test Email</button>
                         </div>
                         {user && user.level !== 3 &&  
                         <button
