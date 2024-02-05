@@ -8,22 +8,17 @@ import {
   PhotoIcon,
   TableCellsIcon,
   ViewColumnsIcon,
+  UsersIcon
 } from '@heroicons/react/24/outline'
+
 
 const items = [
   {
-    title: 'Employees',
-    description: 'Another to-do system you’ll try but eventually give up on.',
-    icon: Bars4Icon,
+    title: 'Manage Users',
+    description: 'Manage employees and onboarding new users.',
+    icon: UsersIcon,
     background: 'bg-pink-500',
-    href: '/employees'
-  },
-  {
-    title: 'Locations',
-    description: 'Stay on top of your deadlines, or don’t — it’s up to you.',
-    icon: CalendarIcon,
-    background: 'bg-yellow-500',
-    href: '/locations'
+    href: '/users'
   },
 ]
 
@@ -36,10 +31,10 @@ const Home = ({ session }) => {
 
   return (
     <div className="h-[100vh] w-[100vw]">
-        <Nav />
+        <Nav initials={user.firstName[0] + user.lastName[0]} />
         <div className="w-full h-full bg-gray-100 p-10">
             <h1 className="text-2xl">Welcome {(user) ? user.firstName + ' ' + user.lastName : ''}</h1>
-            <div className="mt-5">
+            {user.level == 3 && (<div className="mt-5">
               <h2 className="text-base font-semibold leading-6 text-gray-900">Setup</h2>
               <ul role="list" className="mt-6 grid grid-cols-1 gap-6 border-t border-b border-gray-200 py-6 sm:grid-cols-2">
                 {items.map((item, itemIdx) => (
@@ -67,13 +62,7 @@ const Home = ({ session }) => {
                   </li>
                 ))}
               </ul>
-              <div className="mt-4 flex">
-                <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                  Or start from an empty project
-                  <span aria-hidden="true"> &rarr;</span>
-                </a>
-              </div>
-            </div>
+            </div>)}
         </div>
     </div>
   )
