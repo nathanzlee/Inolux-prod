@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer'
 const email = process.env.EMAIL; 
 const pass = process.env.EMAIL_PASS;
 
-export const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: email,
@@ -11,6 +11,53 @@ export const transporter = nodemailer.createTransport({
     }
 })
 
-export const mailOptions = {
+const mailOptions = {
     from: email
 }
+
+export async function sendEmail_newTravelAuth(id, employee, recipient) {
+    await transporter.sendMail({
+        ...mailOptions, 
+        to: recipient,
+        subject: "New Travel Authorization",
+        html: `<p>${employee} has requested a new travel authorization. Click <a href=${process.env.DEV_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to approve the form.</p>`
+    })
+}
+
+export async function sendEmail_travelAuthApproved(id, number, manager, recipient) {
+    await transporter.sendMail({
+        ...mailOptions, 
+        to: recipient,
+        subject: 'Travel Authorization #' + number + ' approved',
+        html: `<p>Your travel authorization (#${number}) has been approved by ${manager}. Click <a href=${process.env.DEV_URL + 'travel/travelauth/view/' + id + '?user=requester'}>here</a> to view the form.</p>`
+    })
+}
+
+export async function sendEmail_travelAuthDenied(id, number, manager, recipient) {
+    await transporter.sendMail({
+        ...mailOptions, 
+        to: recipient,
+        subject: 'Revision needed for Travel Authorization #' + number,
+        html: `<p>${manager} has requested a revision for your travel authorization (#${number}). Click <a href=${process.env.DEV_URL + 'travel/travelauth/view/' + id + '?user=requester'}>here</a> to revise the form.</p>`
+    })
+}
+
+export async function sendEmail_travelAuthRevised(id, number, employee, recipient) {
+    await transporter.sendMail({
+        ...mailOptions, 
+        to: recipient,
+        subject: 'Travel Authorization #' + number + ' revised',
+        html: `<p>${employee} has revised travel authorization #${number}. Click <a href=${process.env.DEV_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to view the form.</p>`
+    })
+}
+
+// export async function sendEmail_travelAuthRevised(id, number, employee, recipient) {
+//     await transporter.sendMail({
+//         ...mailOptions, 
+//         to: recipient,
+//         subject: 'Travel Authorization #' + number + ' revised',
+//         html: `<p>${employee} has revised travel authorization #${number}. Click <a href=${process.env.DEV_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to view the form.</p>`
+//     })
+// }
+
+

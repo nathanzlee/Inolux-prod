@@ -8,7 +8,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Nav() {
+export default function Nav({initials}) {
   const route = useRouter().asPath 
   const selectedStyle = "inline-flex items-center border-b-2 border-[var(--primary-color)] px-1 pt-1 text-sm font-medium text-gray-900"
   const defaultStyle = "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
@@ -57,24 +57,6 @@ export default function Nav() {
                   >
                     Travel
                   </a>
-                  <a
-                    href="/buy"
-                    className={(route == '/buy') ? selectedStyle : defaultStyle}
-                  >
-                    Buy
-                  </a>
-                  <a
-                    href="/sell"
-                    className={(route == '/sell') ? selectedStyle : defaultStyle}
-                  >
-                    Sell
-                  </a>
-                  <a
-                    href="/manage"
-                    className={(route == '/manage') ? selectedStyle : defaultStyle}
-                  >
-                    Manage
-                  </a>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -83,11 +65,9 @@ export default function Nav() {
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-500">
+                        <span className="text-sm font-medium leading-none text-white">{initials}</span>
+                      </span>
                     </Menu.Button>
                   </div>
                   <Transition
@@ -142,31 +122,17 @@ export default function Nav() {
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/"
                 className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
               >
                 Dashboard
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/travel"
                 className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
-                Team
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-              >
-                Projects
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-              >
-                Calendar
+                Travel
               </Disclosure.Button>
             </div>
           </Disclosure.Panel>

@@ -1,3 +1,6 @@
+import '../../../util/keywords'
+import { APPROVED_STATUS, DENIED_STATUS, PENDING_STATUS } from '../../../util/keywords'
+
 const Status = ({ status }) => {
     const approvedStyle = "inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
     const pendingStyle = "inline-flex rounded-full bg-orange-100 px-2 text-xs font-semibold leading-5 text-orange-800"
@@ -5,15 +8,15 @@ const Status = ({ status }) => {
 
     let style, text 
 
-    if (status == "approved") {
+    if (status == "Approved") {
         style = approvedStyle
-        text = "Approved"
-    } else if (status == "pending") {
+        text = APPROVED_STATUS
+    } else if (status == "Pending Approval") {
         style = pendingStyle
-        text = "Pending"
+        text = PENDING_STATUS
     } else {
         style = deniedStyle
-        text = "Denied"
+        text = DENIED_STATUS
     }
 
     return (

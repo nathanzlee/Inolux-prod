@@ -11,7 +11,7 @@ const Notes = ({ data, edit, onChange }) => {
                     <div className="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4">
                         <div>
                             <div className="text-sm font-semibold leading-6 text-gray-900" id="label-notifications">
-                                Notes
+                                Comments from Approver(s)
                             </div>
                         </div>
                         <div className="sm:col-span-2">

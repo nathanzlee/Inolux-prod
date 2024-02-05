@@ -21,7 +21,7 @@ const Table = ({ data, edit, onChange }) => {
         e.preventDefault()
         setRows([
             ...rows, 
-            { date: null, location: '', people: '', reason: '' }
+            { date: null, city: '', state: '', country: '', people: '', customer: '', reason: '' }
         ])
     }
 
@@ -39,10 +39,19 @@ const Table = ({ data, edit, onChange }) => {
                             Date
                             </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                            City/State/Country
+                            City
+                            </th>
+                            <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                            State
+                            </th>
+                            <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                            Country
                             </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                             {"Name(s) of Customer(s), Supplier(s) to Visit"}
+                            </th>
+                            <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                            New/Engaged
                             </th>
                             <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                             Reason for Visit
@@ -72,10 +81,10 @@ const Table = ({ data, edit, onChange }) => {
                                         <input 
                                             className="w-full p-[3px]" 
                                             type="text"
-                                            value={row.location}
+                                            value={row.city}
                                             onChange={(e) => {
                                                 onChangeRow({
-                                                    type: "location",
+                                                    type: "city",
                                                     index,
                                                     value: e.target.value
                                                 })
@@ -84,7 +93,37 @@ const Table = ({ data, edit, onChange }) => {
                                         />
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    <input 
+                                        <input 
+                                            className="w-full p-[3px]" 
+                                            type="text"
+                                            value={row.state}
+                                            onChange={(e) => {
+                                                onChangeRow({
+                                                    type: "state",
+                                                    index,
+                                                    value: e.target.value
+                                                })
+                                            }}
+                                            disabled={!edit}
+                                        />
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        <input 
+                                            className="w-full p-[3px]" 
+                                            type="text"
+                                            value={row.country}
+                                            onChange={(e) => {
+                                                onChangeRow({
+                                                    type: "country",
+                                                    index,
+                                                    value: e.target.value
+                                                })
+                                            }}
+                                            disabled={!edit}
+                                        />
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        <input 
                                             className="w-full p-[3px]" 
                                             type="text"
                                             value={row.people}
@@ -97,6 +136,36 @@ const Table = ({ data, edit, onChange }) => {
                                             }}
                                             disabled={!edit}
                                         />
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        <select
+                                            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 min-w-[120px]"
+                                            defaultValue={row.customer}
+                                            onChange={(e) => {
+                                                onChangeRow({
+                                                    type: "customer",
+                                                    index,
+                                                    value: e.target.value
+                                                })
+                                            }}
+                                            disabled={!edit}
+                                        >
+                                            <option value="New">New</option>
+                                            <option value="Engaged">Engaged</option>
+                                        </select>
+                                        {/* <input 
+                                            className="w-full p-[3px]" 
+                                            type="text"
+                                            value={row.customer}
+                                            onChange={(e) => {
+                                                onChangeRow({
+                                                    type: "customer",
+                                                    index,
+                                                    value: e.target.value
+                                                })
+                                            }}
+                                            disabled={!edit}
+                                        /> */}
                                     </td>
                                     <td className="items-center whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     <input 

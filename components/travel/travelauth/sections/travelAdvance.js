@@ -4,6 +4,7 @@ import RadioOptions from '../form/radioOptions'
 const TravelAdvance = ({ data, edit, onChange }) => {
     const [selectedOption, setSelectedOption] = useState(data ? data.advance : null)
     const [amount, setAmount] = useState(data ? data.amount : null)
+    const [inputDisplay, setInputDisplay] = useState((data.advance) ? 'block' : 'hidden')
 
     useEffect(() => {
         onChange({
@@ -14,6 +15,11 @@ const TravelAdvance = ({ data, edit, onChange }) => {
 
     function handleOnChange(e) {
         setSelectedOption(e.target.value === 'true')
+        if (e.target.value === 'true') {
+            setInputDisplay('block')
+        } else {
+            setInputDisplay('hidden')
+        }
     }
 
     function handleAmountChange(e) {
@@ -41,7 +47,7 @@ const TravelAdvance = ({ data, edit, onChange }) => {
                                     handleOnChange(e)
                                     onChange(e)
                                 }}/>
-                                <div className="my-4 space-y-4">
+                                <div className={"my-4 space-y-4 " + inputDisplay}>
                                     <div className="flex items-center">
                                         <label
                                             htmlFor="push-everything"

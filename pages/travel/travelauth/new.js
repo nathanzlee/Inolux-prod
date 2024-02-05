@@ -1,6 +1,7 @@
 import { getSession, useSession } from 'next-auth/react'
 import Breadcrumb from '../../../components/breadcrumb'
 import TravelAuth from '../../../components/travel/travelauth/travelAuth'
+import { PENDING_STATUS } from '../../../util/keywords'
 
 const pages = [
     { name: 'Travel', href: '/travel' },
@@ -11,26 +12,29 @@ const pages = [
 const NewTravelAuth = ({ session }) => {
     const user = session.user
     const travelAuthData = {
-        name: (user) ? user.firstName  + ' ' + user.lastName : '',
+      requestedBy: {
+        firstName: (user) ? user.firstName : '',
+        lastName: (user) ? user.lastName : '',
         number: (user) ? user.number : '',
         department: (user) ? user.department : '',
-        reqDate: Date.now(),
-        purpose: '',
-        startDate: null,
-        endDate: null,
-        itinerary: [{date: null, location: '', people: '', reason: ''}],
-        travelAdv: {advance: null, amount: 0},
-        personalTravel: {personal: null, startDate: null, endDate: null},
-        international: null,
-        approveBy: [],
-        employeeSig: {
-            signature: '', 
-            date: null
-        },
-        managerSig: null,
-        presidentSig: null,
-        notes: '',
-        status: "pending"
+      },
+      reqDate: Date.now(),
+      purpose: '',
+      startDate: null,
+      endDate: null,
+      itinerary: [{date: null, location: '', people: '', reason: ''}],
+      travelAdv: {advance: null, amount: 0},
+      personalTravel: {personal: null, startDate: null, endDate: null},
+      international: null,
+      approveBy: [],
+      employeeSig: {
+          signature: '', 
+          date: null
+      },
+      managerSig: null,
+      presidentSig: null,
+      notes: '',
+      status: PENDING_STATUS
     }
 
     return (

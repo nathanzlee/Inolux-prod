@@ -17,23 +17,17 @@ const actions = [
         iconForeground: 'text-teal-700',
         iconBackground: 'bg-teal-50',
     },
-    {
-        title: 'Benefits',
-        href: '#',
-        icon: CheckBadgeIcon,
-        iconForeground: 'text-purple-700',
-        iconBackground: 'bg-purple-50',
-    },
 ]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const Travel = () => {
+const Travel = ({session}) => {
+    const user = session.user
     return (
         <div className="h-[100vh] w-[100vw]">
-            <Nav />
+            <Nav initials={user.firstName[0] + user.lastName[0]} />
             <div className="w-full h-full bg-gray-100 p-10">
                 <div className="sm:px-6 lg:px-8">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">Travel</h1>
@@ -63,8 +57,7 @@ const Travel = () => {
                                         </a>
                                     </h3>
                                     <p className="mt-2 text-sm text-gray-500">
-                                        Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et
-                                        quo et molestiae.
+                                        Request and approve travel authorizations.
                                     </p>
                                 </div>
                                     <span

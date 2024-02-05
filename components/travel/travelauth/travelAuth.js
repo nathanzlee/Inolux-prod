@@ -9,16 +9,18 @@ import TravelAdvance from './sections/travelAdvance'
 import PersonalTravel from './sections/personalTravel'
 import Signature from './sections/signature'
 import Notes from './sections/notes'
+import '../../../util/keywords'
+import { APPROVED_STATUS, APPROVE_SUBMIT, CANCEL_SUBMIT, DENIED_STATUS, DENY_SUBMIT, NEW_SUBMIT, PENDING_STATUS, SAVE_SUBMIT } from '../../../util/keywords'
 
 const TravelAuth = ({ type, viewer, data }) => {
-
+    console.log(data)
     const personalInfo = {
-        name: data.name,
-        number: data.number,
-        department: data.department,
-        phone: data.phone,
+        name: data.requestedBy.firstName + ' ' + data.requestedBy.lastName,
+        number: data.requestedBy.number,
+        department: data.requestedBy.department,
         reqDate: data.reqDate
     }
+
     function reducer(state, action) {
         return {
             ...state,
@@ -26,7 +28,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         }
     }
     const [formData, update] = useReducer(reducer, {
-        ...personalInfo,
+        reqDate: data.reqDate,
         international: data.international,
         purpose: data.purpose,
         startDate: data.startDate,
@@ -91,10 +93,10 @@ const TravelAuth = ({ type, viewer, data }) => {
         e.preventDefault()
         let approval
         if (viewer == 'manager') {
-            const status = (formData.presidentSig !== null && formData.presidentSig.signature == '') ? 'pending' : 'approved'
+            const status = (formData.presidentSig !== null && formData.presidentSig.signature == '') ? PENDING_STATUS : APPROVED_STATUS
             approval = {role: 'manager', signature: formData.managerSig.signature, date: formData.managerSig.date, status: status, notes: formData.notes}
         } else {
-            const status = (managerSignature.signature == '') ? 'pending' : 'approved'
+            const status = (formData.managerSig.signature == '') ? PENDING_STATUS : APPROVED_STATUS
             approval = {role: 'president', signature: formData.presidentSig.signature, date: formData.presidentSig.date, status: status, notes: formData.notes}
         }
         console.log(approval)
@@ -121,7 +123,7 @@ const TravelAuth = ({ type, viewer, data }) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({role: viewer, status: "denied"})
+            body: JSON.stringify({role: viewer, status: DENIED_STATUS, notes: formData.notes})
         })
         const res = await req.json()
         console.log(res)
@@ -141,14 +143,14 @@ const TravelAuth = ({ type, viewer, data }) => {
                     onClick={handleCancel}
                     className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
-                    Cancel
+                    {CANCEL_SUBMIT}
                 </button>
                 <button
                     type="submit"
                     onClick={(e) => {handleSubmit(e)}}
                     className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    Submit
+                    {NEW_SUBMIT}
                 </button>
             </div>
         )
@@ -159,7 +161,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         showPresident = false
         editPresident = false
     } else if (type == 'view') {
-        if (viewer == 'requester' && data.status !== 'approved') {
+        if (viewer == 'requester' && data.status !== APPROVED_STATUS) {
             submit = (
                 <div className="flex justify-end gap-x-3">
                     <button
@@ -167,14 +169,14 @@ const TravelAuth = ({ type, viewer, data }) => {
                         onClick={handleCancel}
                         className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     >
-                        Cancel
+                        {CANCEL_SUBMIT}
                     </button>
                     <button
                         type="submit"
                         onClick={(e) => {handleSave(e)}}
                         className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Save
+                        {SAVE_SUBMIT}
                     </button>
                 </div>
             )
@@ -192,7 +194,7 @@ const TravelAuth = ({ type, viewer, data }) => {
                         onClick={handleCancel}
                         className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                     >
-                        Cancel
+                        {CANCEL_SUBMIT}
                     </button>
                 </div>
             )
@@ -204,31 +206,53 @@ const TravelAuth = ({ type, viewer, data }) => {
             editPresident = false
         }
     } else {
-        submit = (
-            <div className="flex justify-end gap-x-3">
-                <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    onClick={(e) => {handleDeny(e)}}
-                    className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                    Deny
-                </button>
-                <button
-                    type="submit"
-                    onClick={(e) => {handleAuthorize(e)}}
-                    className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    Authorize
-                </button>
-            </div>
-        )
+        if (data.status == DENIED_STATUS) {
+            submit = (
+                <div className="flex justify-end gap-x-3">
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                        {CANCEL_SUBMIT}
+                    </button>
+                    <button
+                        type="submit"
+                        onClick={(e) => {handleAuthorize(e)}}
+                        className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        {APPROVE_SUBMIT}
+                    </button>
+                </div>
+            )
+        } else {
+            submit = (
+                <div className="flex justify-end gap-x-3">
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                        {CANCEL_SUBMIT}
+                    </button>
+                    <button
+                        type="submit"
+                        onClick={(e) => {handleDeny(e)}}
+                        className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                        {DENY_SUBMIT}
+                    </button>
+                    <button
+                        type="submit"
+                        onClick={(e) => {handleAuthorize(e)}}
+                        className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                        {APPROVE_SUBMIT}
+                    </button>
+                </div>
+            )
+        }
+        
         edit = false
         editEmployee = false
 
@@ -276,7 +300,7 @@ const TravelAuth = ({ type, viewer, data }) => {
                     <Signature label={'Employee Signature'} data={formData.employeeSig} edit={editEmployee} onChange={(data) => {handleChange('employeeSig', data)}} />
                     {showManager && <Signature label={'Manager Signature'} data={formData.managerSig} edit={editManager} onChange={(data) => {handleChange('managerSig', data)}} />}
                     {showPresident && <Signature label={'President Signature'} data={formData.presidentSig} edit={editPresident} onChange={(data) => {handleChange('presidentSig', data)}} />}
-                    <Notes data={formData.notes} edit={(data.status == 'approved') ? false : true} onChange={(data) => {handleChange('notes', data)}}/>
+                    <Notes data={formData.notes} edit={(data.status == APPROVED_STATUS) ? false : true} onChange={(data) => {handleChange('notes', data)}}/>
                 </div>
             </div>
 

@@ -1,33 +1,31 @@
 import { useState, useEffect } from 'react'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import Router from 'next/router'
 import Breadcrumb from '../../../../components/breadcrumb'
 import TravelAuth from '../../../../components/travel/travelauth/travelAuth'
-
+import { PENDING_STATUS } from '@/util/keywords'
 
 const AuthorizeTravelAuth = ({ session }) => {
     const router = useRouter()
     const user = session.user
     const [loading, setLoading] = useState(false)
     const [travelAuth, setTravelAuth] = useState({
-        name: '',
-        number: '',
-        department: '',
-        phone: '',
-        reqDate: Date.now(),
-        purpose: '',
-        startDate: null,
-        endDate: null,
-        itinerary: [{date: null, location: '', people: '', reason: ''}],
-        travelAdv: {advance: true, amount: 0},
-        personalTravel: {personal: false, startDate: null, endDate: null},
-        international: true,
-        approveBy: [],
-        employeeSig: null,
-        managerSig: null,
-        presidentSig: null,
-        notes: '',
-        status: "pending"
+      requestedBy: {},
+      reqDate: Date.now(),
+      purpose: '',
+      startDate: null,
+      endDate: null,
+      itinerary: [{date: null, location: '', people: '', reason: ''}],
+      travelAdv: {advance: true, amount: 0},
+      personalTravel: {personal: false, startDate: null, endDate: null},
+      international: true,
+      approveBy: [],
+      employeeSig: null,
+      managerSig: null,
+      presidentSig: null,
+      notes: '',
+      status: PENDING_STATUS
     })
 
     useEffect(() => {
@@ -36,6 +34,12 @@ const AuthorizeTravelAuth = ({ session }) => {
         .then(req => req.json())
         .then(res => {
             const auth = res
+
+            // Prevent people who are not managers to authorize this travel auth
+            if (!auth.approveBy.includes(user._id)) {
+              Router.push('/travel/travelauth')
+            }
+
             setTravelAuth({
                 id: router.query.id,
                 ...auth
@@ -63,7 +67,7 @@ const AuthorizeTravelAuth = ({ session }) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
-    console.log(session)
+    
     if (!session){
       return {
         redirect: {

@@ -6,6 +6,7 @@ const PersonalTravel = ({ data, edit, onChange }) => {
     const [selectedOption, setSelectedOption] = useState(data.personal)
     const [startDate, setStartDate] = useState(data.startDate)
     const [endDate, setEndDate] = useState(data.endDate)
+    const [inputDisplay, setInputDisplay] = useState('hidden')
 
     useEffect(() => {
         onChange({
@@ -32,6 +33,11 @@ const PersonalTravel = ({ data, edit, onChange }) => {
 
     function handleOnChange(e) {
         setSelectedOption(e.target.value === 'true')
+        if (e.target.value === 'true') {
+            setInputDisplay('block')
+        } else {
+            setInputDisplay('hidden')
+        }
     }
     const options = [
         {label: "Yes", value: true},
@@ -53,7 +59,9 @@ const PersonalTravel = ({ data, edit, onChange }) => {
                                     handleOnChange(e)
                                     onChange(e)
                                 }}/>
-                                <Duration start={startDate} end={endDate} edit={edit} onStartChange={(e) => {handleStartChange(e)}} onEndChange={(e) => {handleEndChange(e)}}/>
+                                <div className={inputDisplay}>
+                                    <Duration start={startDate} end={endDate} edit={edit} onStartChange={(e) => {handleStartChange(e)}} onEndChange={(e) => {handleEndChange(e)}}/>
+                                </div>
                             </div>
                         </div>
                     </div>

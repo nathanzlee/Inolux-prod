@@ -15,19 +15,28 @@ const TravelAuths = ({ user, data, loading }) => {
                 <thead className="bg-gray-50 sticky top-0 z-10">
                     <tr>
                         <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                            #
+                        </th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Name
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Manager
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                            Requested
+                            Request Date
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                            Approved
+                            Revision Date
+                        </th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            Approval Date
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                             Status
+                        </th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            Travel Advance Disbursement Date
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                             <span className="sr-only">View</span>
@@ -36,15 +45,17 @@ const TravelAuths = ({ user, data, loading }) => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                     {data.map((travelAuth) => {
-                        const {_id, name, reqDate, managerSig, presidentSig, status} = travelAuth
-                        let approvedDate, type
+                        const {_id, number, requestedBy, reqDate, revisionDate, managerSig, presidentSig, status, advDisbursementDate} = travelAuth
+                        let approvedDate, revDate, type, disbursementDate
                         if (presidentSig == null) {
                             approvedDate = (managerSig.date == null) ? '--' : new Date(managerSig.date).toLocaleDateString()
                         } else {
                             approvedDate = (managerSig.date == null || presidentSig.date == null) ? '--' : new Date(Math.max(new Date(managerSig.date), new Date(presidentSig.date))).toLocaleDateString()
                         }
 
-                        if (name == user.firstName + ' ' + user.lastName) {
+                        revDate = (revisionDate == null) ? '--' : new Date(revisionDate).toLocaleDateString()
+
+                        if (requestedBy.firstName == user.firstName) {
                             type = {text: 'View', user: 'requester'}
                         } else {
                             if (managerSig.user?.firstName == user.firstName) {
@@ -58,8 +69,10 @@ const TravelAuths = ({ user, data, loading }) => {
                             }
                         }
 
+                        disbursementDate = (advDisbursementDate == null) ? '--' : new Date(advDisbursementDate).toLocaleDateString()
+
                         return (
-                            <Row key={_id} id={_id} requester={name} manager={managerSig.user?.firstName + ' ' + managerSig.user?.lastName} reqDate={new Date(reqDate).toLocaleDateString()} approvedDate={approvedDate} status={status} type={type} />
+                            <Row key={_id} id={_id} number={number} requester={requestedBy.firstName + ' ' + requestedBy.lastName} manager={managerSig.user?.firstName + ' ' + managerSig.user?.lastName} reqDate={new Date(reqDate).toLocaleDateString()} revisionDate={revDate} approvedDate={approvedDate} status={status} advDisbursementDate={disbursementDate} type={type} />
                         )
                     })}
                 </tbody>

@@ -1,17 +1,20 @@
+import { PENDING_STATUS } from '@/util/keywords'
 import mongoose from 'mongoose'
 
 const travelAuthSchema = mongoose.Schema({
-    name: {type: String},
-    number: {type: String},
-    department: {type: String},
+    number: {type: Number},
     reqDate: {type: Date},
     international: {type: Boolean},
-    purpose: {type: String},
+    purpose: {type: Array, default: []},
     startDate: {type: Date},
     endDate: {type: Date},
     itinerary: {type: Array, default: []},
     travelAdv: {advance: {type: Boolean}, amount: {type: Number}},
     personalTravel: {personal: {type: Boolean}, startDate: {type: Date}, endDate: {type: Date}},
+    requestedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    },
     approveBy: {
         type: [mongoose.Schema.ObjectId],
         ref: 'user'
@@ -33,8 +36,11 @@ const travelAuthSchema = mongoose.Schema({
         },
         default: null
     },
+    revisionDate: {type: Date},
     notes: {type: String, default: ""},
-    status: {type: String, default: "pending"}
+    status: {type: String, default: PENDING_STATUS},
+    customerType: {type: String},
+    advDisbursementDate: {type: Date},
 })
 mongoose.models = {}
 const travel = mongoose.models.travelAuth || mongoose.model('travelAuth', travelAuthSchema)

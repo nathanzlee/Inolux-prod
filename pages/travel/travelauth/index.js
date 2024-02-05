@@ -3,9 +3,11 @@ import { useSession, getSession } from 'next-auth/react'
 import Breadcrumb from '../../../components/breadcrumb'
 import Select from '../../../components/select'
 import TravelAuths from '../../../components/travel/travelauth/travelAuths'
+import '../../../util/keywords'
 import Router, { useRouter } from 'next/router'
 import { CheckCircleIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { XCircleIcon } from '@heroicons/react/20/solid'
+import { APPROVED_STATUS, DENIED_STATUS, PENDING_STATUS } from '../../../util/keywords'
 
 const requesterOptions = [
     {id: 1, option: "Any"},
@@ -15,9 +17,9 @@ const requesterOptions = [
 
 const statusOptions = [
     {id: 1, option: "Any"},
-    {id: 2, option: "Approved"},
-    {id: 3, option: "Pending"},
-    {id: 4, option: "Denied"}
+    {id: 2, option: APPROVED_STATUS},
+    {id: 3, option: PENDING_STATUS},
+    {id: 4, option: DENIED_STATUS}
 ]
 
 const pages = [
@@ -40,23 +42,12 @@ const Travel = ({ session }) => {
         fetch('/api/travel/travelauth')
         .then(req => req.json())
         .then(res => {
+            console.log(res.data)
             setTravelAuths(res.data)
             setLoading(false)
         })
     }, [])
     
-    async function testEmail() {
-        console.log("Send email")
-        const req = await fetch('/api/mailer', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: null 
-        })
-        const res = await req.json()
-        console.log(res)
-    }
 
     return (
         <div className="h-[100vh] w-[100vw]">
@@ -73,8 +64,7 @@ const Travel = ({ session }) => {
                             <span className="ml-5 mr-2">Status: </span>
                             <Select options={statusOptions} initial={statusFilter} onChange={(e) => {
                                 setStatusFilter(e)
-                            }} styles={"min-w-[120px]"} />
-                            <button onClick={testEmail}>Test Email</button>
+                            }} styles={"min-w-[180px]"} />
                         </div>
                         {user && user.level !== 3 &&  
                         <button
@@ -99,11 +89,11 @@ const Travel = ({ session }) => {
                         if (statusFilter.option == "Any") {
                             return true
                         } else if (statusFilter.option == "Approved") {
-                            return travelAuth.status == "approved"
-                        } else if (statusFilter.option == "Pending") {
-                            return travelAuth.status == "pending"
+                            return travelAuth.status == "Approved"
+                        } else if (statusFilter.option == "Pending Approval") {
+                            return travelAuth.status == "Pending Approval"
                         } else {
-                            return travelAuth.status == "denied"
+                            return travelAuth.status == "Revision Needed"
                         }
                     })} loading={loading}/>
                     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">

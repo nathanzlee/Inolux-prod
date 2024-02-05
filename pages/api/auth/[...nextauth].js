@@ -44,23 +44,15 @@ export default NextAuth({
 const loginUser = async ({password, user}) => {
   const isMatch = await bcrypt.compare(password, user.password)
   if(!isMatch){
-    // throw new Error("Password Incorrect.");
-    const hashPass = await bcrypt.hash(password, 12)
-    User.findOneAndUpdate(
-      {email: user.email},
-      {$set: {password: hashPass}},
-      (err) => {
-        if (err) throw new Error("Something wrong")
-      }
-    )
+    throw new Error("Password Incorrect.")
   }
 
   return user;
 }
 
-const registerUser = async ({email, password}) => {
-  const hashPass = await bcrypt.hash(password, 12)
-  const newUser = new User({ email, password: hashPass })
-  await newUser.save()
-  throw new Error("Success! Check your email.");
-}
+// const registerUser = async ({email, password}) => {
+//   const hashPass = await bcrypt.hash(password, 12)
+//   const newUser = new User({ email, password: hashPass })
+//   await newUser.save()
+//   throw new Error("Success! Check your email.");
+// }

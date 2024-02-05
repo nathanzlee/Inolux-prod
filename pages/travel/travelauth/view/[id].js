@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import Router from 'next/router'
 import Breadcrumb from '../../../../components/breadcrumb'
 import TravelAuth from '../../../../components/travel/travelauth/travelAuth'
 
@@ -10,24 +11,26 @@ const ViewTravelAuth = ({ session }) => {
     const user = session.user
     const [loading, setLoading] = useState(false)
     const [travelAuth, setTravelAuth] = useState({
-        name: '',
-        number: '',
-        department: '',
-        phone: '',
-        reqDate: Date.now(),
-        purpose: '',
-        startDate: null,
-        endDate: null,
-        itinerary: [{date: null, location: '', people: '', reason: ''}],
-        travelAdv: {advance: true, amount: 0},
-        personalTravel: {personal: false, startDate: null, endDate: null},
-        international: true,
-        approveBy: [],
-        employeeSig: null,
-        managerSig: null,
-        presidentSig: null,
-        notes: '',
-        status: "pending"
+      requestedBy: {
+        firstName: (user) ? user.firstName : '',
+        lastName: (user) ? user.lastName : '',
+        number: (user) ? user.number : '',
+        department: (user) ? user.department : '',
+      },
+      reqDate: Date.now(),
+      purpose: '',
+      startDate: null,
+      endDate: null,
+      itinerary: [{date: null, location: '', people: '', reason: ''}],
+      travelAdv: {advance: true, amount: 0},
+      personalTravel: {personal: false, startDate: null, endDate: null},
+      international: true,
+      approveBy: [],
+      employeeSig: null,
+      managerSig: null,
+      presidentSig: null,
+      notes: '',
+      status: "pending"
     })
 
     useEffect(() => {
@@ -36,6 +39,12 @@ const ViewTravelAuth = ({ session }) => {
         .then(req => req.json())
         .then(res => {
             const auth = res
+
+            // Prevent people who didn't request this auth and are not managers to view this travel auth
+            if (!auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id) {
+              Router.push('/travel/travelauth')
+            }
+
             setTravelAuth({
                 id: router.query.id,
                 ...auth
