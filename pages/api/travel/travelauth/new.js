@@ -4,7 +4,6 @@ import TravelAuth from '../../../../models/travelAuth'
 import Counter from '../../../../models/counter'
 import { getSession } from 'next-auth/react'
 import { sendEmail_newTravelAuth } from '../../../../util/nodemailer'
-import { sendEmail } from '@/util/resend'
 import { ObjectId } from 'mongodb'
 
 connectDB()
