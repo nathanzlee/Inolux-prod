@@ -65,7 +65,6 @@ async function newTravelAuth(req, res) {
 
         await sendEmail_newTravelAuth(newTravelAuth._id, session.user.firstName, user.managers[0].email)
         res.json({msg: "Success!"})
-        res.json({msg: 'Success!'})
     } catch (err) {
         console.log(err)
         res.json({err: err})
