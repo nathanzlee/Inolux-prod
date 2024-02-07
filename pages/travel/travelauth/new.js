@@ -19,7 +19,7 @@ const NewTravelAuth = ({ session }) => {
         department: (user) ? user.department : '',
       },
       reqDate: Date.now(),
-      purpose: '',
+      purpose: [],
       startDate: null,
       endDate: null,
       itinerary: [{date: null, location: '', people: '', reason: ''}],
@@ -49,7 +49,7 @@ const NewTravelAuth = ({ session }) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
-    console.log(session)
+    
     if (!session){
       return {
         redirect: {

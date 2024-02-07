@@ -42,7 +42,6 @@ const Travel = ({ session }) => {
         fetch('/api/travel/travelauth')
         .then(req => req.json())
         .then(res => {
-            console.log(res.data)
             setTravelAuths(res.data)
             setLoading(false)
         })

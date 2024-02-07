@@ -1,7 +1,7 @@
 import Row from './row'
 
 const TravelAuths = ({ user, data, loading }) => {
-    console.log(data)
+    
     return (!data || data.length == 0) ?
     (
         <div className="h-[600px] flex flex-col justify-center items-center border-dashed border-2 border-gray-300 rounded-md mt-8 p-4">
@@ -45,7 +45,7 @@ const TravelAuths = ({ user, data, loading }) => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                     {data.map((travelAuth) => {
-                        const {_id, number, requestedBy, reqDate, revisionDate, managerSig, presidentSig, status, advDisbursementDate} = travelAuth
+                        const {_id, number, requestedBy, reqDate, revisionDate, managerSig, presidentSig, status, travelAdv} = travelAuth
                         let approvedDate, revDate, type, disbursementDate
                         if (presidentSig == null) {
                             approvedDate = (managerSig.date == null) ? '--' : new Date(managerSig.date).toLocaleDateString()
@@ -59,17 +59,13 @@ const TravelAuths = ({ user, data, loading }) => {
                             type = {text: 'View', user: 'requester'}
                         } else {
                             if (managerSig.user?.firstName == user.firstName) {
-                                // You da manager
-                                console.log("Im the manager bitch")
                                 type = (managerSig.signature !== '') ? {text: 'View', user: 'manager'} : {text: 'Authorize', user: 'manager'}
                             } else {
-                                // You da president 
-                                console.log("Im the president bitch")
                                 type = (presidentSig?.signature !== '') ? {text: 'View', user: 'president'} : {text: 'Authorize', user: 'president'}
                             }
                         }
 
-                        disbursementDate = (advDisbursementDate == null) ? '--' : new Date(advDisbursementDate).toLocaleDateString()
+                        disbursementDate = (travelAdv.disbursementDate == null) ? '--' : new Date(travelAdv.disbursementDate).toLocaleDateString()
 
                         return (
                             <Row key={_id} id={_id} number={number} requester={requestedBy.firstName + ' ' + requestedBy.lastName} manager={managerSig.user?.firstName + ' ' + managerSig.user?.lastName} reqDate={new Date(reqDate).toLocaleDateString()} revisionDate={revDate} approvedDate={approvedDate} status={status} advDisbursementDate={disbursementDate} type={type} />

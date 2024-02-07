@@ -13,7 +13,7 @@ import '../../../util/keywords'
 import { APPROVED_STATUS, APPROVE_SUBMIT, CANCEL_SUBMIT, DENIED_STATUS, DENY_SUBMIT, NEW_SUBMIT, PENDING_STATUS, SAVE_SUBMIT } from '../../../util/keywords'
 
 const TravelAuth = ({ type, viewer, data }) => {
-    console.log(data)
+    
     const personalInfo = {
         name: data.requestedBy.firstName + ' ' + data.requestedBy.lastName,
         number: data.requestedBy.number,
@@ -41,10 +41,15 @@ const TravelAuth = ({ type, viewer, data }) => {
         presidentSig: data.presidentSig,
         notes: data.notes,
     })
+
+    const tripPurposeOptions = [
+        {label: "Customer Visit", value: "Customer Visit"},
+        {label: "Supplier Visit", value: "Supplier Visit"},
+        {label: "Show", value: "Show"},
+        {label: "Intercompany Business", value: "Intercompany Business"},
+    ]
     
     function handleChange(type, data) {
-        console.log(type, data)
-        console.log(formData)
         update({type: type, data: data})
     }
     
@@ -55,7 +60,6 @@ const TravelAuth = ({ type, viewer, data }) => {
     async function handleSubmit(e) {
         e.preventDefault()
 
-        console.log(formData)
         const req = await fetch('/api/travel/travelauth/new', {
             method: 'POST',
             headers: {
@@ -99,7 +103,7 @@ const TravelAuth = ({ type, viewer, data }) => {
             const status = (formData.managerSig.signature == '') ? PENDING_STATUS : APPROVED_STATUS
             approval = {role: 'president', signature: formData.presidentSig.signature, date: formData.presidentSig.date, status: status, notes: formData.notes}
         }
-        console.log(approval)
+      
         const req = await fetch('/api/travel/travelauth/authorize/' + data.id, {
             method: 'POST',
             headers: {
@@ -108,7 +112,7 @@ const TravelAuth = ({ type, viewer, data }) => {
             body: JSON.stringify(approval)
         })
         const res = await req.json()
-        console.log(res)
+        
         if (res.msg == 'Success!') {
             Router.push({pathname: '/travel/travelauth', query: {action: 'authorize', success: true}})
         } else {
@@ -126,7 +130,7 @@ const TravelAuth = ({ type, viewer, data }) => {
             body: JSON.stringify({role: viewer, status: DENIED_STATUS, notes: formData.notes})
         })
         const res = await req.json()
-        console.log(res)
+       
         if (res.msg == 'Success!') {
             Router.push('/travel/travelauth')
         } else {
@@ -284,7 +288,21 @@ const TravelAuth = ({ type, viewer, data }) => {
                         <h3 className="text-base font-semibold leading-6 text-gray-900">Trip Information</h3>
                     </div>
                     <InternationalTravel data={formData.international} edit={edit} onChange={(e) => {handleChange('international', e.target.value)}} />
-                    <TripPurpose data={formData.purpose} edit={edit} onChange={(e) => {handleChange('purpose', e.target.value)}} />
+                    <TripPurpose data={formData.purpose} options={tripPurposeOptions} edit={edit} onChange={(e, type) => {
+                        if (type == 'default') {
+                            if (e.target.checked) {
+                                handleChange('purpose', [...formData.purpose, e.target.value])
+                            } else {
+                                handleChange('purpose', formData.purpose.filter(o => o !== e.target.value))
+                            }
+                        } else {
+                            const defaultOptions = formData.purpose.filter(o => tripPurposeOptions.map(i => i.value).includes(o))
+                            if (defaultOptions.length < formData.purpose.length) {
+                                handleChange('purpose', [...defaultOptions, e.target.value])
+                            }
+                        }
+                        
+                    }} />
                     <TripDuration data={{startDate: formData.startDate, endDate: formData.endDate}} edit={edit} onChange={(data) => {
                         handleChange('startDate', data.startDate)
                         handleChange('endDate', data.endDate)

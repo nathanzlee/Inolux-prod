@@ -17,7 +17,6 @@ async function newUser(req, res) {
         const userCounter = await Counter.findOne({name: "users"})
         const password = req.body.firstName[0].toUpperCase() + req.body.lastName[0].toLowerCase() + (userCounter.count + 1).toString()
         const hashPass = await bcrypt.hash(password, 12)
-        console.log(req.body.manager)
         const manager = new ObjectId(req.body.manager)
         const newUser = new User({
             firstName: req.body.firstName,

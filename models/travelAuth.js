@@ -9,7 +9,7 @@ const travelAuthSchema = mongoose.Schema({
     startDate: {type: Date},
     endDate: {type: Date},
     itinerary: {type: Array, default: []},
-    travelAdv: {advance: {type: Boolean}, amount: {type: Number}},
+    travelAdv: {advance: {type: Boolean}, amount: {type: Number}, disbursementDate: {type: Date}},
     personalTravel: {personal: {type: Boolean}, startDate: {type: Date}, endDate: {type: Date}},
     requestedBy: {
         type: mongoose.Schema.ObjectId,
@@ -40,7 +40,6 @@ const travelAuthSchema = mongoose.Schema({
     notes: {type: String, default: ""},
     status: {type: String, default: PENDING_STATUS},
     customerType: {type: String},
-    advDisbursementDate: {type: Date},
 })
 mongoose.models = {}
 const travel = mongoose.models.travelAuth || mongoose.model('travelAuth', travelAuthSchema)

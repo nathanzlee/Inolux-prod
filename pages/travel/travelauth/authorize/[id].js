@@ -13,7 +13,7 @@ const AuthorizeTravelAuth = ({ session }) => {
     const [travelAuth, setTravelAuth] = useState({
       requestedBy: {},
       reqDate: Date.now(),
-      purpose: '',
+      purpose: [],
       startDate: null,
       endDate: null,
       itinerary: [{date: null, location: '', people: '', reason: ''}],

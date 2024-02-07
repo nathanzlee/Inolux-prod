@@ -24,7 +24,6 @@ const authorizeTravelAuth = async (req, res) => {
         } else {
             await TravelAuth.updateOne({_id: req.query.id}, {$set: {'presidentSig.signature': req.body.signature, 'presidentSig.date': req.body.date, status: req.body.status, notes: req.body.notes}})
         }
-        console.log(req.query.id, requesterTravelAuth.number, session.user.firstName, requesterTravelAuth.requestedBy.email)
         sendEmail_travelAuthApproved(req.query.id, requesterTravelAuth.number, session.user.firstName, requesterTravelAuth.requestedBy.email)
         if (requesterTravelAuth.travelAdv.advance) {
             

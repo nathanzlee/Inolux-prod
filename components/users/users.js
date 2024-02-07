@@ -1,7 +1,6 @@
 import Row from './row'
 
 const Users = ({ data, loading }) => {
-    console.log(data)
     
     return (!data || data.length == 0) ?
     (

@@ -13,7 +13,6 @@ const Table = ({ data, edit, onChange }) => {
             }
             return item 
         })
-        console.log(newData)
         setRows(newData)
     }
 

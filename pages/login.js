@@ -7,9 +7,8 @@ import { LockClosedIcon } from '@heroicons/react/20/solid'
 const Login = ({session}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-    console.log(session)
 
-    if (session) Router.push('/')
+  if (session) Router.push('/')
 
   const handleSubmit = async (e) => {
     e.preventDefault()

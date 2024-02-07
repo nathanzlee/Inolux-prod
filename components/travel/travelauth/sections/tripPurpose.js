@@ -1,17 +1,24 @@
 import { useState } from 'react'
-import RadioOptions from '../form/radioOptions'
+import CheckboxOptions from '../form/checkboxOptions'
 
-const TripPurpose = ({ data, edit, onChange }) => {
-    const [selectedOption, setSelectedOption] = useState(data)
+const TripPurpose = ({ data, options, edit, onChange }) => {
+    const [selectedOptions, setSelectedOptions] = useState(data)
 
-    function handleOnChange(e) {
-        setSelectedOption(e.target.value)
+    function handleOnChange(e, type) {
+        if (type == 'default') {
+            if (e.target.checked) {
+                setSelectedOptions([...selectedOptions, e.target.value])
+            } else {
+                setSelectedOptions(selectedOptions.filter(o => o !== e.target.value))
+            }
+        } else {
+            const defaultOptions = selectedOptions.filter(o => options.map(i => i.value).includes(o))
+            if (defaultOptions.length < selectedOptions.length) {
+                setSelectedOptions([...defaultOptions, e.target.value])
+            }
+        }
     }
-    const options = [
-        {label: "Customer Visit", value: "Customer Visit"},
-        {label: "Supplier Visit", value: "Supplier Visit"},
-        {label: "Show", value: "Show"}
-    ]
+    
     return (
         <div className="space-y-6 divide-y divide-gray-200 sm:space-y-5">
             <div className="pt-6 sm:pt-5">
@@ -24,10 +31,10 @@ const TripPurpose = ({ data, edit, onChange }) => {
                         </div>
                         <div className="sm:col-span-2">
                             <div className="max-w-lg">
-                                <RadioOptions options={options} selected={selectedOption} edit={edit} onChange={(e) => {
-                                    handleOnChange(e)
-                                    onChange(e)
-                                }}/>
+                                <CheckboxOptions options={options} selected={selectedOptions} edit={edit} onChange={(e, type) => {
+                                    handleOnChange(e, type)
+                                    onChange(e, type)
+                                }} />
                             </div>
                         </div>
                     </div>

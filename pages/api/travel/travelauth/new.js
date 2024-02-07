@@ -17,13 +17,12 @@ async function newTravelAuth(req, res) {
     // Populate approveBy field with corresponding managers based on session user
     // Add created travel auth to session user's travelAuths field
     const session = await getSession({req})
-    console.log(req.body)
+   
     try {
         const president = await User.findOne({level: 3})
         const user = await User.findOne({email: session.user.email}).populate('managers')
         let approvalFields
         if (req.body.international == 'true' && session.user.level === 1) {
-            console.log("hellll nawwwww")
             approvalFields = {
                 approveBy: [user.managers[0], president],
                 managerSig: {
@@ -38,7 +37,6 @@ async function newTravelAuth(req, res) {
                 }
             }
         } else {
-            console.log('helll yeaaaaa')
             approvalFields = {
                 approveBy: [user.managers[0]],
                 managerSig: {

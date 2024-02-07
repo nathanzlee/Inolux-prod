@@ -33,7 +33,6 @@ const Users = ({ session }) => {
         fetch('/api/users')
         .then(req => req.json())
         .then(res => {
-            console.log(res.data)
             let data = res.data
             data.sort(function(a, b) {
                 // Compare the 2 dates
@@ -55,7 +54,6 @@ const Users = ({ session }) => {
             body: JSON.stringify({firstName: firstName, lastName: lastName, email: email, level: (level == 'employee') ? 1 : 2, department: department, manager: manager})
         })
         const res = await req.json()
-        console.log(res)
         setOpen(false)
     }
 
@@ -209,7 +207,7 @@ const Users = ({ session }) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession(context)
-    console.log(session)
+    
     if(!session){
         return {
             redirect: {
