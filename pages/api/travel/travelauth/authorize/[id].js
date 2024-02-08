@@ -1,7 +1,7 @@
 import connectDB from '../../../../../util/connectDB'
 import TravelAuth from '../../../../../models/travelAuth'
 import User from '../../../../../models/user'
-import { sendEmail_travelAuthApproved, sendEmail_travelAuthDenied } from '../../../../../util/nodemailer'
+import { sendEmail_advDisbursementNeeded, sendEmail_travelAuthApproved, sendEmail_travelAuthDenied } from '../../../../../util/nodemailer'
 import { DENIED_STATUS } from '@/util/keywords'
 import { getSession } from 'next-auth/react'
 
@@ -26,7 +26,7 @@ const authorizeTravelAuth = async (req, res) => {
         }
         sendEmail_travelAuthApproved(req.query.id, requesterTravelAuth.number, session.user.firstName, requesterTravelAuth.requestedBy.email)
         if (requesterTravelAuth.travelAdv.advance) {
-            
+            sendEmail_advDisbursementNeeded(req.query.id, requesterTravelAuth.number, requesterTravelAuth.requestedBy.firstName, 'hhteh@inolux-corp.com')
         }
         res.json({msg: 'Success!'})
     } catch (err) {

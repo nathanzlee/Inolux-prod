@@ -56,7 +56,7 @@ export async function sendEmail_advDisbursementNeeded(id, number, employee, reci
         ...mailOptions, 
         to: recipient,
         subject: 'Travel Advance Disbursement For Travel Authorization #' + number,
-        html: `<p>Travel authorization #${number} requested by ${employee} has been approved. Click <a href=${process.env.DEV_URL + 'travel/travelauth/view/' + id}>here</a> to fill out the travel advance disbursement date.</p>`
+        html: `<p>Travel authorization #${number} requested by ${employee} has been approved. Click <a href=${process.env.PROD_URL + 'travel/travelauth/view/' + id}>here</a> to fill out the travel advance disbursement date.</p>`
     })
 }
 
