@@ -41,7 +41,7 @@ const ViewTravelAuth = ({ session }) => {
             const auth = res
 
             // Prevent people who didn't request this auth and are not managers to view this travel auth
-            if (!auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id) {
+            if (!auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id && !(user.number == 2 && auth.travelAdv.advance)) {
               Router.push('/travel/travelauth')
             }
 
@@ -64,7 +64,7 @@ const ViewTravelAuth = ({ session }) => {
             <Breadcrumb pages={pages}/>
             <div className="w-full h-full bg-gray-100 overflow-y-auto px-10 pb-[100px]">
               {loading && <h1 className="text-2xl text-gray-300 mt-10">Loading...</h1>}
-              {!loading && <TravelAuth type="view" viewer={router.query.user} data={travelAuth} />}
+              {!loading && <TravelAuth type="view" viewer={user} data={travelAuth} />}
             </div>
         </div>
     )

@@ -59,7 +59,7 @@ const AuthorizeTravelAuth = ({ session }) => {
             <Breadcrumb pages={pages}/>
             <div className="w-full h-full bg-gray-100 overflow-y-auto px-10 pb-[100px]">
               {loading && <h1 className="text-2xl text-gray-300 mt-10">Loading...</h1>}
-              {!loading && <TravelAuth type="authorize" viewer={router.query.user} data={travelAuth} />}
+              {!loading && <TravelAuth type="authorize" viewer={user} data={travelAuth} />}
             </div>
         </div>
     )

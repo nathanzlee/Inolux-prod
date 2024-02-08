@@ -1,10 +1,7 @@
 import connectDB from '../../../../util/connectDB'
-import User from '../../../../models/user'
 import TravelAuth from '../../../../models/travelAuth'
 import { getSession } from 'next-auth/react'
-import Travel from '@/pages/travel'
-import user from '../../../../models/user'
-import travel from '../../../../models/travelAuth'
+import { APPROVED_STATUS } from '@/util/keywords'
 
 connectDB()
 
@@ -22,7 +19,7 @@ const getTravelAuth = async (req, res) => {
       // For Holton, send all travel auths
       travelAuthList = allTravelAuths
     } else if (session.user.number == 2){
-      travelAuthList = allTravelAuths.filter(auth => auth.requestedBy.number == user.number || auth.approveBy.map(i => i.number).includes(user.number) || (auth.travelAdv.advance == true && auth.travelAdv.disbursementDate == null))
+      travelAuthList = allTravelAuths.filter(auth => auth.requestedBy.number == user.number || auth.approveBy.map(i => i.number).includes(user.number) || (auth.status == APPROVED_STATUS && auth.travelAdv.advance == true))
     } else {
       travelAuthList = allTravelAuths.filter(auth => auth.requestedBy.number == user.number || auth.approveBy.map(i => i.number).includes(user.number))
     }

@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import RadioOptions from '../form/radioOptions'
 import { getDateFromInput, dateInputValue } from '@/util/date'
 
-const TravelAdvance = ({ data, edit, onChange }) => {
+const TravelAdvance = ({ data, edit, onChange, editDisbursement, showDisbursement }) => {
     const [selectedOption, setSelectedOption] = useState(data ? data.advance : null)
     const [amount, setAmount] = useState(data ? data.amount : null)
     const [inputDisplay, setInputDisplay] = useState((data.advance) ? 'block' : 'hidden')
     const [disbursementDate, setDisbursementDate] = useState(data ? data.disbursementDate : null)
+    const [disbursementDisplay, setDisbursementDisplay] = useState((showDisbursement) ? 'block' : 'hidden')
 
     useEffect(() => {
         onChange({
@@ -14,7 +15,7 @@ const TravelAdvance = ({ data, edit, onChange }) => {
             amount: amount,
             disbursementDate: disbursementDate
         })
-    }, [selectedOption, amount])
+    }, [selectedOption, amount, disbursementDate])
 
     function handleOnChange(e) {
         setSelectedOption(e.target.value === 'true')
@@ -71,7 +72,7 @@ const TravelAdvance = ({ data, edit, onChange }) => {
                                             disabled={!edit}
                                         />
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className={"flex items-center " + disbursementDisplay}>
                                         <label
                                             htmlFor="push-everything"
                                             className="block text-sm font-medium leading-6 text-gray-900"
@@ -83,7 +84,7 @@ const TravelAdvance = ({ data, edit, onChange }) => {
                                             className="border-gray-300 ml-2 text-[var(--primary-color) focus:ring-text-[var(--primary-color)"
                                             value={(disbursementDate) ? dateInputValue(new Date(disbursementDate)) : null}
                                             onChange={(e) => {handleDisbursementChange(e)}}
-                                            disabled={!edit}
+                                            disabled={!editDisbursement}
                                         />
                                     </div>
                                 </div>

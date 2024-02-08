@@ -13,6 +13,21 @@ import '../../../util/keywords'
 import { APPROVED_STATUS, APPROVE_SUBMIT, CANCEL_SUBMIT, DENIED_STATUS, DENY_SUBMIT, NEW_SUBMIT, PENDING_STATUS, SAVE_SUBMIT } from '../../../util/keywords'
 
 const TravelAuth = ({ type, viewer, data }) => {
+
+    let role
+    if (type == 'new') {
+        role = 'requester'
+    } else if (data.requestedBy.number == viewer.number) {
+        role = 'requester'
+    } else if (data.managerSig?.user.number == viewer.number) {
+        role = 'manager'
+    } else if (data.presidentSig?.user.number == viewer.number) {
+        role = 'president'
+    } else if (data.travelAdv.advance && viewer.number == 2) {
+        role = 'update disbursement'
+    } else {
+        role = 'other'
+    }
     
     const personalInfo = {
         name: data.requestedBy.firstName + ' ' + data.requestedBy.lastName,
@@ -77,7 +92,6 @@ const TravelAuth = ({ type, viewer, data }) => {
 
     async function handleSave(e) {
         e.preventDefault()
-        
         const req = await fetch('/api/travel/travelauth/edit/' + data.id, {
             method: 'POST',
             headers: {
@@ -96,7 +110,7 @@ const TravelAuth = ({ type, viewer, data }) => {
     async function handleAuthorize(e) {
         e.preventDefault()
         let approval
-        if (viewer == 'manager') {
+        if (role == 'manager') {
             const status = (formData.presidentSig !== null && formData.presidentSig.signature == '') ? PENDING_STATUS : APPROVED_STATUS
             approval = {role: 'manager', signature: formData.managerSig.signature, date: formData.managerSig.date, status: status, notes: formData.notes}
         } else {
@@ -127,7 +141,7 @@ const TravelAuth = ({ type, viewer, data }) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({role: viewer, status: DENIED_STATUS, notes: formData.notes})
+            body: JSON.stringify({role: role, status: DENIED_STATUS, notes: formData.notes})
         })
         const res = await req.json()
        
@@ -139,6 +153,9 @@ const TravelAuth = ({ type, viewer, data }) => {
     }
 
     let submit, edit, editEmployee, showManager, editManager, showPresident, editPresident
+    const editDisbursement = (data.status == APPROVED_STATUS && viewer.number == 2 && data.travelAdv.disbursementDate == null)
+    const showDisbursement = (data.status == APPROVED_STATUS && viewer.number == 2)
+
     if (type == 'new') {
         submit = (
             <div className="flex justify-end gap-x-3">
@@ -165,7 +182,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         showPresident = false
         editPresident = false
     } else if (type == 'view') {
-        if (viewer == 'requester' && data.status !== APPROVED_STATUS) {
+        if ((role == 'requester' && data.status !== APPROVED_STATUS) || editDisbursement) {
             submit = (
                 <div className="flex justify-end gap-x-3">
                     <button
@@ -260,7 +277,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         edit = false
         editEmployee = false
 
-        if (viewer == 'manager') {
+        if (role == 'manager') {
             showManager = true
             editManager = true
             showPresident = (formData.presidentSig !== null) && true
@@ -308,7 +325,7 @@ const TravelAuth = ({ type, viewer, data }) => {
                         handleChange('endDate', data.endDate)
                     }} />
                     <Itinerary data={formData.itinerary} edit={edit} onChange={(data) => {handleChange('itinerary', data)}}/>
-                    <TravelAdvance data={formData.travelAdv} edit={edit} onChange={(data) => {handleChange('travelAdv', data)}} />
+                    <TravelAdvance data={formData.travelAdv} edit={edit} onChange={(data) => {handleChange('travelAdv', data)}} editDisbursement={editDisbursement} showDisbursement={showDisbursement} />
                     <PersonalTravel data={formData.personalTravel} edit={edit} onChange={(data) => {handleChange('personalTravel', data)}} />
                 </div>
                 <div className="space-y-6 divide-y divide-gray-200 pt-8 sm:space-y-5 sm:pt-10">

@@ -55,13 +55,13 @@ const TravelAuths = ({ user, data, loading }) => {
 
                         revDate = (revisionDate == null) ? '--' : new Date(revisionDate).toLocaleDateString()
 
-                        if (requestedBy.firstName == user.firstName) {
-                            type = {text: 'View', user: 'requester'}
+                        if (requestedBy.number == user.number) {
+                            type = 'view'
                         } else {
-                            if (managerSig.user?.firstName == user.firstName) {
-                                type = (managerSig.signature !== '') ? {text: 'View', user: 'manager'} : {text: 'Authorize', user: 'manager'}
+                            if (managerSig.user?.number == user.number) {
+                                type = (managerSig.signature !== '') ? 'view' : 'authorize'
                             } else {
-                                type = (presidentSig?.signature !== '') ? {text: 'View', user: 'president'} : {text: 'Authorize', user: 'president'}
+                                type = (presidentSig?.signature !== '') ? 'view' : 'authorize'
                             }
                         }
 

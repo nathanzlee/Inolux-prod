@@ -41,7 +41,7 @@ const NewTravelAuth = ({ session }) => {
         <div className="h-[100vh] w-[100vw]">
             <Breadcrumb pages={pages}/>
             <div className="w-full h-full bg-gray-100 overflow-y-auto px-10 pb-[100px]">
-                <TravelAuth type="new" requester={(user) ? user : null} data={travelAuthData} />
+                <TravelAuth type="new" data={travelAuthData} />
             </div>
         </div>
     )

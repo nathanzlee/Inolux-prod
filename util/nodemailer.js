@@ -20,7 +20,7 @@ export async function sendEmail_newTravelAuth(id, employee, recipient) {
         ...mailOptions, 
         to: recipient,
         subject: "New Travel Authorization",
-        html: `<p>${employee} has requested a new travel authorization. Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to approve the form.</p>`
+        html: `<p>${employee} has requested a new travel authorization. Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id}>here</a> to approve the form.</p>`
     })
 }
 
@@ -29,7 +29,7 @@ export async function sendEmail_travelAuthApproved(id, number, manager, recipien
         ...mailOptions, 
         to: recipient,
         subject: 'Travel Authorization #' + number + ' approved',
-        html: `<p>Your travel authorization (#${number}) has been approved by ${manager}. Click <a href=${process.env.PROD_URL + 'travel/travelauth/view/' + id + '?user=requester'}>here</a> to view the form.</p>`
+        html: `<p>Your travel authorization (#${number}) has been approved by ${manager}. Click <a href=${process.env.PROD_URL + 'travel/travelauth/view/' + id}>here</a> to view the form.</p>`
     })
 }
 
@@ -38,7 +38,7 @@ export async function sendEmail_travelAuthDenied(id, number, manager, recipient)
         ...mailOptions, 
         to: recipient,
         subject: 'Revision needed for Travel Authorization #' + number,
-        html: `<p>${manager} has requested a revision for your travel authorization (#${number}). Click <a href=${process.env.PROD_URL + 'travel/travelauth/view/' + id + '?user=requester'}>here</a> to revise the form.</p>`
+        html: `<p>${manager} has requested a revision for your travel authorization (#${number}). Click <a href=${process.env.PROD_URL + 'travel/travelauth/view/' + id}>here</a> to revise the form.</p>`
     })
 }
 
@@ -47,7 +47,7 @@ export async function sendEmail_travelAuthRevised(id, number, employee, recipien
         ...mailOptions, 
         to: recipient,
         subject: 'Travel Authorization #' + number + ' revised',
-        html: `<p>${employee} has revised travel authorization #${number}. Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to view the form.</p>`
+        html: `<p>${employee} has revised travel authorization #${number}. Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id}>here</a> to view the form.</p>`
     })
 }
 
@@ -56,7 +56,7 @@ export async function sendEmail_advDisbursementNeeded(id, number, employee, reci
         ...mailOptions, 
         to: recipient,
         subject: 'Travel Advance Disbursement For Travel Authorization #' + number,
-        html: `<p>Travel authorization #${number} requested by ${employee} has been approved. Click <a href=${process.env.DEV_URL + 'travel/travelauth/authorize/' + id + '?user=manager'}>here</a> to fill out the travel advance disbursement date.</p>`
+        html: `<p>Travel authorization #${number} requested by ${employee} has been approved. Click <a href=${process.env.DEV_URL + 'travel/travelauth/view/' + id}>here</a> to fill out the travel advance disbursement date.</p>`
     })
 }
 

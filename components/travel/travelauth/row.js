@@ -1,7 +1,7 @@
 import Status from './status'
 
 const Row = ({ id, number, requester, manager, reqDate, revisionDate, approvedDate, status, advDisbursementDate, type }) => {
-    const url = (type.text == 'View') ? '/travel/travelauth/view/' + id + '/?user=' + type.user : '/travel/travelauth/authorize/' + id + '/?user=' + type.user
+    const url = '/travel/travelauth/' + type + '/' + id
 
     return (
         <tr>
@@ -17,7 +17,7 @@ const Row = ({ id, number, requester, manager, reqDate, revisionDate, approvedDa
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{advDisbursementDate}</td>
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                 <a href={url} className="text-[var(--primary-color)] hover:text-indigo-900">
-                    {type.text}
+                    {type[0].toUpperCase() + type.substring(1, type.length)}
                 </a>
             </td>
         </tr>
