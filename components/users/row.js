@@ -23,6 +23,17 @@ const Row = ({ id, number, name, level, manager }) => {
         const res = await req.json()
     }
 
+    async function handleRemove() {
+        const req = await fetch('/api/users/remove/' + id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        const res = await req.json()
+    }
+
     return (
         <tr>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{number}</td>
@@ -47,7 +58,7 @@ const Row = ({ id, number, name, level, manager }) => {
                 <a onClick={() => {handleSave()}} className="text-[var(--primary-color)] hover:text-indigo-900 mr-4">
                     {level !== 3 && "Save"}
                 </a>
-                <a href="#" className="text-[var(--primary-color)] hover:text-indigo-900">
+                <a onClick={() => {handleRemove()}} className="text-[var(--primary-color)] hover:text-indigo-900">
                     {level !== 3 && "Remove"}
                 </a>
             </td>

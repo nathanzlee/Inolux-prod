@@ -43,7 +43,7 @@ const Users = ({ session }) => {
             setUsers(data)
             setLoading(false)
         })
-    }, [open])
+    }, [open, users])
     
     async function handleAdd() {
         const req = await fetch('/api/users/new', {

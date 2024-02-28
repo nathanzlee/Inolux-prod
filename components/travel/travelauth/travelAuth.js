@@ -335,7 +335,7 @@ const TravelAuth = ({ type, viewer, data }) => {
                     <Signature label={'Employee Signature'} data={formData.employeeSig} edit={editEmployee} onChange={(data) => {handleChange('employeeSig', data)}} />
                     {showManager && <Signature label={'Manager Signature'} data={formData.managerSig} edit={editManager} onChange={(data) => {handleChange('managerSig', data)}} />}
                     {showPresident && <Signature label={'President Signature'} data={formData.presidentSig} edit={editPresident} onChange={(data) => {handleChange('presidentSig', data)}} />}
-                    <Notes data={formData.notes} edit={(data.status == APPROVED_STATUS) ? false : true} onChange={(data) => {handleChange('notes', data)}}/>
+                    <Notes data={formData.notes} edit={(data.status !== APPROVED_STATUS && role !== 'requester') ? true : false} onChange={(data) => {handleChange('notes', data)}}/>
                 </div>
             </div>
 
