@@ -41,7 +41,7 @@ const ViewTravelAuth = ({ session }) => {
             const auth = res
 
             // Prevent people who didn't request this auth and are not managers to view this travel auth
-            if (!auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id && !(user.number == 2 && auth.travelAdv.advance)) {
+            if (user.level !== 3 && !auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id && !(user.number == 2 && auth.travelAdv.advance)) {
               Router.push('/travel/travelauth')
             }
 
