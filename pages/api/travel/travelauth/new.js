@@ -58,10 +58,10 @@ async function newTravelAuth(req, res) {
         await User.updateOne({email: session.user.email},{$push: {travelAuths: newTravelAuth}})
         await Counter.updateOne({name: "travel auths"}, {$inc: {count: 1}})
         if (req.body.international == 'true' && session.user.level === 1) {
-            await sendEmail_newTravelAuth(newTravelAuth._id, session.user.firstName, president.email)
+            await sendEmail_newTravelAuth(newTravelAuth._id, travelAuthCounter.count + 1, session.user.firstName, president.email)
         }
 
-        await sendEmail_newTravelAuth(newTravelAuth._id, session.user.firstName, user.managers[0].email)
+        await sendEmail_newTravelAuth(newTravelAuth._id, travelAuthCounter.count + 1, session.user.firstName, user.managers[0].email)
         res.json({msg: "Success!"})
     } catch (err) {
         console.log(err)

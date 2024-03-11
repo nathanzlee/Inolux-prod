@@ -15,12 +15,12 @@ const mailOptions = {
     from: email
 }
 
-export async function sendEmail_newTravelAuth(id, employee, recipient) {
+export async function sendEmail_newTravelAuth(id, number, employee, recipient) {
     await transporter.sendMail({
         ...mailOptions, 
         to: recipient,
-        subject: "New Travel Authorization",
-        html: `<p>${employee} has requested a new travel authorization. Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id}>here</a> to approve the form.</p>`
+        subject: "New Travel Authorization (#" + number + ")",
+        html: `<p>${employee} has requested a new travel authorization (#${number}). Click <a href=${process.env.PROD_URL + 'travel/travelauth/authorize/' + id}>here</a> to approve the form.</p>`
     })
 }
 
