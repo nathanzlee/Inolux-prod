@@ -17,3 +17,4 @@ export const CANCEL_SUBMIT = 'Cancel'
 // Travel Advance Disbursement Email
 // export const TRAVEL_ADVANCE_DISBURSEMENT_EMAIL = 'hhteh@inolux-corp.com'
 export const TRAVEL_ADVANCE_DISBURSEMENT_EMAIL = 'chancenotgood@gmail.com'
+export const TRAVEL_ADVANCE_DISBURSEMENT_NUMBER = 69

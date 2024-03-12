@@ -10,7 +10,7 @@ import PersonalTravel from './sections/personalTravel'
 import Signature from './sections/signature'
 import Notes from './sections/notes'
 import '../../../util/keywords'
-import { APPROVED_STATUS, APPROVE_SUBMIT, CANCEL_SUBMIT, DENIED_STATUS, DENY_SUBMIT, NEW_SUBMIT, PENDING_STATUS, SAVE_SUBMIT } from '../../../util/keywords'
+import { APPROVED_STATUS, APPROVE_SUBMIT, CANCEL_SUBMIT, DENIED_STATUS, DENY_SUBMIT, NEW_SUBMIT, PENDING_STATUS, SAVE_SUBMIT, TRAVEL_ADVANCE_DISBURSEMENT_NUMBER } from '../../../util/keywords'
 
 const TravelAuth = ({ type, viewer, data }) => {
 
@@ -23,7 +23,7 @@ const TravelAuth = ({ type, viewer, data }) => {
         role = 'manager'
     } else if (data.presidentSig?.user.number == viewer.number) {
         role = 'president'
-    } else if (data.travelAdv.advance && viewer.number == 2) {
+    } else if (data.travelAdv.advance && viewer.number == TRAVEL_ADVANCE_DISBURSEMENT_NUMBER) {
         role = 'update disbursement'
     } else {
         role = 'other'
@@ -153,8 +153,8 @@ const TravelAuth = ({ type, viewer, data }) => {
     }
 
     let submit, edit, editEmployee, showManager, editManager, showPresident, editPresident
-    const editDisbursement = (data.status == APPROVED_STATUS && viewer.number == 2 && data.travelAdv.disbursementDate == null)
-    const showDisbursement = (data.status == APPROVED_STATUS && viewer.number == 2)
+    const editDisbursement = (data.status == APPROVED_STATUS && viewer.number == TRAVEL_ADVANCE_DISBURSEMENT_NUMBER && data.travelAdv.disbursementDate == null)
+    const showDisbursement = (data.status == APPROVED_STATUS && viewer.number == TRAVEL_ADVANCE_DISBURSEMENT_NUMBER)
 
     if (type == 'new') {
         submit = (

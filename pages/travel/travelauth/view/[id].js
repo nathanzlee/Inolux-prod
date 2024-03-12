@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Router from 'next/router'
 import Breadcrumb from '../../../../components/breadcrumb'
 import TravelAuth from '../../../../components/travel/travelauth/travelAuth'
-
+import { TRAVEL_ADVANCE_DISBURSEMENT_NUMBER } from '../../../../util/keywords'
 
 const ViewTravelAuth = ({ session }) => {
     const router = useRouter()
@@ -41,7 +41,7 @@ const ViewTravelAuth = ({ session }) => {
             const auth = res
 
             // Prevent people who didn't request this auth and are not managers to view this travel auth
-            if (user.level !== 3 && !auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id && !(user.number == 2 && auth.travelAdv.advance)) {
+            if (user.level !== 3 && !auth.approveBy.includes(user._id) && auth.requestedBy._id !== user._id && !(user.number == TRAVEL_ADVANCE_DISBURSEMENT_NUMBER && auth.travelAdv.advance)) {
               Router.push('/travel/travelauth')
             }
 
